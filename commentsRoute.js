@@ -7,6 +7,8 @@ router.use(express.json())
 
 //Make a post
 router.post('/', (req, res) => { 
+  console.log(req.body.title)
+  console.log(req.body.contents)
   if(req.body.title && req.body.contents){
   postData.insert(req.body)
   .then(post =>{
@@ -51,7 +53,7 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   postData.findById(req.params.id)
   .then(post => {
-    if(post){
+    if(post.length > 0){
       res.status(200).json(post)
     } else {
       res.status(404).json({errorMessage: "Couldn't find that post"})
@@ -104,7 +106,8 @@ router.delete('/:id', (req, res) => {
 router.put('/:id', (req, res) => {
   postData.update(req.params.id, req.body)
   .then(changed => {
-    if(changed){
+    console.log(changed)
+    if(changed === 1){
       res.status(200).json({successMessage: "Succesfully editted"})
     } else {
       res.status(404).json({errorMessage: "Couldn't find that post"})
